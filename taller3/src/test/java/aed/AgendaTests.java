@@ -110,6 +110,20 @@ public class AgendaTests {
     }
 
     @Test
+    void recordatorioEquals() {
+        Fecha f = new Fecha(10, 6);
+        Horario h = new Horario(10, 30);
+        Recordatorio r = new Recordatorio("hola", f, h);
+        Recordatorio r2 = new Recordatorio("hola", f, h);
+        Recordatorio r3 =  new Recordatorio("chau", f, h);
+
+        assertEquals(r, r2);
+        assertNotEquals(r, r3);
+
+    }
+
+
+    @Test
     void crearRecordatorio() {
         Fecha f = new Fecha(10, 6);
         Horario h = new Horario(9, 45);

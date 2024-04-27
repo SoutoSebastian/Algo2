@@ -40,15 +40,18 @@ public class Fecha {
         
         boolean oen = (otra == null);
 
+        boolean mismaClase = (otra.getClass() != this.getClass());
+
+        if (mismaClase){
+        return false;}
+
         Fecha otraFecha = (Fecha) otra;
 
         boolean mismoMes = (mes() != otraFecha.mes());
 
         boolean mismoDia = (dia() != otraFecha.dia());
 
-        boolean mismaClase = (otra.getClass() != this.getClass());
-
-        if ( mismoMes || mismoDia || mismaClase || oen){
+        if ( mismoMes || mismoDia || oen){
 
             res = false;
         }
