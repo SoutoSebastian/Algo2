@@ -11,7 +11,8 @@ public class Fecha {
     }
 
     public Fecha(Fecha fecha) {
-        throw new UnsupportedOperationException("No implementada aun");
+        _dia = fecha._dia;
+        _mes = fecha._mes;
     }
 
     public Integer dia() {
@@ -40,18 +41,18 @@ public class Fecha {
         
         boolean oen = (otra == null);
 
-        boolean mismaClase = (otra.getClass() != this.getClass());
+        boolean distintaClase = (otra.getClass() != this.getClass());
 
-        if (mismaClase){
+        if (distintaClase){
         return false;}
 
         Fecha otraFecha = (Fecha) otra;
 
-        boolean mismoMes = (mes() != otraFecha.mes());
+        boolean distintoMes = (mes() != otraFecha.mes());
 
-        boolean mismoDia = (dia() != otraFecha.dia());
+        boolean distintoDia = (dia() != otraFecha.dia());
 
-        if ( mismoMes || mismoDia || oen){
+        if ( distintoMes || distintoDia || oen){
 
             res = false;
         }
