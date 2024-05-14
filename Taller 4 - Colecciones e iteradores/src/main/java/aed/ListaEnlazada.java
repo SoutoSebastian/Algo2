@@ -10,6 +10,7 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         private T valor;
         private Nodo ant;
         private Nodo sig;
+
     }
 
     public ListaEnlazada() {
@@ -83,24 +84,81 @@ public class ListaEnlazada<T> implements Secuencia<T> {
     }
 
     public void eliminar(int i) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = this.primero;
+
+        if(this.longitud() == 1){
+
+            this.primero = null;
+            this.ultimo = null;
+
+        }else if (i==0){
+
+            this.primero = actual.sig;
+            actual.sig.ant = null;
+
+        }else if(i == this.longitud()-1){
+
+            this.ultimo = this.ultimo.ant;
+            this.ultimo.sig = null;
+
+        }else{
+
+            for(int j=0; j<(this.longitud()); j++){
+                
+                if (j==i){
+                    actual.ant.sig = actual.sig;
+                    actual.sig.ant = actual.ant;
+                } 
+
+                actual = actual.sig;
+            }
+        }
     }
 
     public void modificarPosicion(int indice, T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+        Nodo actual = this.primero;
+
+        for(int j=0; j<this.longitud();j++){
+            if (j==indice){
+                actual.valor = elem;
+            }
+
+            actual = actual.sig;
+        }
     }
 
     public ListaEnlazada<T> copiar() {
-        throw new UnsupportedOperationException("No implementada aun");
+        ListaEnlazada<T> nuevaLista = new ListaEnlazada<T>();
+        
+        for (int i=0; i<this.longitud();i++){
+            nuevaLista.agregarAtras(this.obtener(i));
+        }
+
+        return nuevaLista;
+
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
-        throw new UnsupportedOperationException("No implementada aun");
+        primero = null;
+        ultimo = null;
+
+        for (int i=0; i<lista.longitud();i++){
+            this.agregarAtras(lista.obtener(i));
+        }
+        
     }
     
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("No implementada aun");
+        String res = "[";
+
+        for (int i = 0; i<(this.longitud()-1);i++){
+            res = res + this.obtener(i).toString()+", ";
+        }
+
+        res = res + this.obtener(this.longitud()-1).toString() + "]";
+
+        return res;
     }
 
     private class ListaIterador implements Iterador<T> {
