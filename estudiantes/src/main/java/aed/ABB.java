@@ -67,7 +67,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }else{
             Nodo ultNodo = ultimoNodoBuscado(this.raiz, elem);
 
-            if (ultNodo.valor != elem ) {
+            if (!(ultNodo.valor.equals(elem ))) {
             
                 if (elem.compareTo(ultNodo.valor) > 0){
                     ultNodo.der = Ainsert;
@@ -82,14 +82,16 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     private Nodo ultimoNodoBuscado(Nodo n,T elem){
-        if(n.valor == elem){
+        if(n.valor.equals(elem)){
             return n;
+
         }else if (elem.compareTo(n.valor) > 0){
             if(n.der == null){
                 return n;
             }else{
                 return ultimoNodoBuscado(n.der, elem);
             }
+
         }else{
             if(n.izq == null){
                 return n;
@@ -103,56 +105,90 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     }
 
     public boolean pertenece(T elem){
+
+        if (raiz != null){
         Nodo comparacion = ultimoNodoBuscado(raiz, elem);
 
-        return (comparacion.valor == elem);
+        return (comparacion.valor.equals(elem));
+        }
+        else{
+            return false;
+        }
     }
 
     public void eliminar(T elem){
         Nodo busqueda = ultimoNodoBuscado(raiz,elem);
 
-        if (busqueda.valor == elem){
+        if (busqueda.valor.equals(elem)){
             if(cuantosHijos(busqueda) == 0){
 
-                if(elem.compareTo(busqueda.padre.valor) > 0){
-                    busqueda.padre.der = null;
+                if(busqueda.padre != null){
+                    if(elem.compareTo(busqueda.padre.valor) > 0){
+                        busqueda.padre.der = null;
+                    }else{
+                        busqueda.padre.izq = null;
+                    }
                 }else{
-                    busqueda.padre.izq = null;
+                    raiz = null;
                 }
 
             }else if (cuantosHijos(busqueda) == 1){
-
+                Nodo nuevoHijo;
                 if (busqueda.izq != null){
-                    Nodo nuevoHijo = busqueda.izq;
+                    nuevoHijo = busqueda.izq;
                     
-                    if (nuevoHijo.valor.compareTo(busqueda.padre.valor) > 0){
-                        busqueda.padre.der = nuevoHijo;
-                        nuevoHijo.padre = busqueda.padre;
+                    if (busqueda.padre != null){
+                        if (nuevoHijo.valor.compareTo(busqueda.padre.valor) > 0){
+                            busqueda.padre.der = nuevoHijo;
+                        }else{
+                            busqueda.padre.izq = nuevoHijo;
+                        }
                     }else{
-                        busqueda.padre.izq = nuevoHijo;
-                        nuevoHijo.padre = busqueda.padre;
+                        raiz = nuevoHijo;
                     }
-                }else if (busqueda.der != null){
-                   Nodo nuevoHijo = busqueda.der;
-
-                   if (nuevoHijo.valor.compareTo(busqueda.padre.valor) > 0){
-                    busqueda.padre.der = nuevoHijo;
-                    nuevoHijo.padre = busqueda.padre;
+                }else {
+                    nuevoHijo = busqueda.der;
                     
+                   if (busqueda.padre != null){ 
+                        if (nuevoHijo.valor.compareTo(busqueda.padre.valor) > 0){
+                            busqueda.padre.der = nuevoHijo;
+                        }else{
+                            busqueda.padre.izq = nuevoHijo;
+                        }
                     }else{
-                    busqueda.padre.izq = nuevoHijo;
-                    nuevoHijo.padre = busqueda.padre;
+                        raiz = nuevoHijo;
                     }
                 }
+                nuevoHijo.padre = busqueda.padre;
             }else if (cuantosHijos(busqueda) == 2){
                 Nodo reemplazo = predecesorInmediato(busqueda.izq);
                 
                 busqueda.valor = reemplazo.valor;
-                
-                if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
-                    reemplazo.padre.der = null;
+
+                if (busqueda.padre != null){
+                    if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
+                        reemplazo.padre.der = reemplazo.izq;
+                        if(reemplazo.izq != null){
+                            reemplazo.izq.padre = reemplazo.padre;
+                        }
+                    }else{
+                        reemplazo.padre.izq = reemplazo.izq;
+                        if(reemplazo.izq != null){
+                        reemplazo.izq.padre = busqueda;
+                        }
+                    }
                 }else{
-                    reemplazo.padre.izq = null;
+                    if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
+                        reemplazo.padre.der = reemplazo.izq;
+                        if(reemplazo.izq != null){
+                            reemplazo.izq.padre = reemplazo.padre;
+                        }
+                    }else{
+                        reemplazo.padre.izq = reemplazo.izq;
+                        if(reemplazo.izq != null){
+                            reemplazo.izq.padre = busqueda;
+                        }
+                    }
                 }
             }
         }
@@ -180,19 +216,99 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
     }
 
+    private String inOrder(Nodo n){
+        String res="";
+
+        if (n.izq != null && n.der != null){
+            res =  inOrder(n.izq) + n.valor.toString()+"," + inOrder(n.der);
+
+        }else if(n.izq != null && n.der == null){
+            res = inOrder(n.izq) + n.valor.toString() + ",";
+        
+        }else if (n.der != null && n.izq == null){
+            res = n.valor.toString() + "," + inOrder(n.der);
+        
+        }else{
+            res = n.valor.toString() + ",";
+        }
+
+
+        return res;
+    }
+
     public String toString(){
-        throw new UnsupportedOperationException("No implementada aun");
+        String etapa1 = inOrder(this.raiz);
+        String res = "{" + etapa1.substring(0, etapa1.length() -1) + "}";
+        return res;
+
+    }
+
+    public Nodo sucesor(Nodo n){
+        Nodo actual = n;
+        if (n.der != null){           
+            actual = n.der;
+
+            while(actual.izq != null){
+                actual = actual.izq;
+            }
+            return actual;
+        }
+        else if(n.padre != null){
+
+            actual = actual.padre;
+
+            while (n.valor.compareTo(actual.valor) > 0 && actual.padre != null){
+                actual = actual.padre;
+            }
+            
+            if(n.valor.compareTo(actual.valor) > 0){
+                return n;
+            }else{
+                return actual;
+            }
+
+        }else{
+            return n;
+        }
+    }
+
+    public Nodo minimisimo(){
+        Nodo actual = raiz;
+
+        while (actual.izq != null){
+            actual = actual.izq;
+        }
+        return actual;
+    }
+
+    public Nodo devuelveRaiz(){
+        return this.raiz;
     }
 
     private class ABB_Iterador implements Iterador<T> {
         private Nodo _actual;
 
+        public ABB_Iterador(){
+            _actual = raiz;
+
+            while (_actual.izq != null){
+                _actual = _actual.izq;
+            }
+
+        }
+
         public boolean haySiguiente() {            
-            throw new UnsupportedOperationException("No implementada aun");
+            return sucesor(_actual) != _actual;
         }
     
         public T siguiente() {
-            throw new UnsupportedOperationException("No implementada aun");
+            T res = _actual.valor;
+            
+            if(sucesor(_actual) != _actual){
+            _actual = sucesor(_actual);
+            }
+
+            return res;
         }
     }
 
