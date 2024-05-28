@@ -165,34 +165,22 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
                 
                 busqueda.valor = reemplazo.valor;
 
-                if (busqueda.padre != null){
-                    if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
-                        reemplazo.padre.der = reemplazo.izq;
-                        if(reemplazo.izq != null){
-                            reemplazo.izq.padre = reemplazo.padre;
-                        }
-                    }else{
-                        reemplazo.padre.izq = reemplazo.izq;
-                        if(reemplazo.izq != null){
-                        reemplazo.izq.padre = busqueda;
-                        }
+
+                if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
+                    reemplazo.padre.der = reemplazo.izq;
+                    if(reemplazo.izq != null){
+                        reemplazo.izq.padre = reemplazo.padre;
                     }
                 }else{
-                    if(reemplazo.valor.compareTo(reemplazo.padre.valor) > 0){
-                        reemplazo.padre.der = reemplazo.izq;
-                        if(reemplazo.izq != null){
-                            reemplazo.izq.padre = reemplazo.padre;
-                        }
-                    }else{
-                        reemplazo.padre.izq = reemplazo.izq;
-                        if(reemplazo.izq != null){
-                            reemplazo.izq.padre = busqueda;
-                        }
+                    reemplazo.padre.izq = reemplazo.izq;
+                    if(reemplazo.izq != null){
+                        reemplazo.izq.padre = busqueda;
                     }
                 }
             }
         }
     }
+    
 
     private int cuantosHijos(Nodo n){
         if (n.izq == null && n.der == null){
@@ -243,7 +231,7 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
 
     }
 
-    public Nodo sucesor(Nodo n){
+    private Nodo sucesor(Nodo n){
         Nodo actual = n;
         if (n.der != null){           
             actual = n.der;
@@ -262,28 +250,18 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
             }
             
             if(n.valor.compareTo(actual.valor) > 0){
-                return n;
+                Nodo nuevo = new Nodo(null);
+                return nuevo;
             }else{
                 return actual;
             }
 
         }else{
-            return n;
+            Nodo nuevo = new Nodo(null);
+            return nuevo;
         }
     }
 
-    public Nodo minimisimo(){
-        Nodo actual = raiz;
-
-        while (actual.izq != null){
-            actual = actual.izq;
-        }
-        return actual;
-    }
-
-    public Nodo devuelveRaiz(){
-        return this.raiz;
-    }
 
     private class ABB_Iterador implements Iterador<T> {
         private Nodo _actual;
@@ -298,15 +276,13 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
         }
 
         public boolean haySiguiente() {            
-            return sucesor(_actual) != _actual;
+            return sucesor(_actual).valor != null ;
         }
     
         public T siguiente() {
             T res = _actual.valor;
             
-            if(sucesor(_actual) != _actual){
             _actual = sucesor(_actual);
-            }
 
             return res;
         }
