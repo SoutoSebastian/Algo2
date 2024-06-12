@@ -102,6 +102,73 @@ public class trie<T> {
         return res;
     }
 
+
+    private Boolean tieneMasDeUnhijo(Nodo padre){
+        int contador = 0;
+        int i = 0;
+        while ((contador<2)&&i<=256){
+            i ++;
+            if (padre.siguientes.get(i) != null){
+                contador ++;
+            }
+        }
+        return contador > 1;                            //CORECCION: antes contador < 2
+    }
+
+
+    private Boolean tieneUnhijo(Nodo padre){                            //CORRECCION: agrego esta funcion para chequear cuando sale del for.
+        int contador = 0;
+        int i = 0;
+        while ((contador<1)&&i<=256){
+            i ++;
+            if (padre.siguientes.get(i) != null){
+                contador ++;
+            }
+        }
+        return contador == 1;
+    }
+
+    public void borrar(String clave){
+        Nodo actual = raiz;
+        Nodo ultNodo = null;                                                //GUARDO EN ULTNODO (MIENTRAS VOY BAJANDO) AQUEL NODO Q TENGA MAS DE UN HIJO O Q TENGA SIGNIFICADO
+                                                                            //SI TIENE ALGUNA DE ESTAS 2, NO PUEDO BORRAR ESE NODO!!! SI NO PIERDO COSAS Q NO QUIERO PERDER.
+                                                                            //----> VER EJEMPLO VISUAL DE BORRAR CHARITO, CON CHARI CON SIGNFICADO Y CHARISA, CHARIZOTE TAMBIEN CON SIGN.
+        int ultimoIndice = 0;
+
+        for (int i=0; i< clave.length(); i++){
+            char letra = clave.charAt(i);
+            int indice = (int) letra;
+            Nodo siguiente = actual.siguientes.get(indice);
+            
+            if (actual.valor!=null || tieneMasDeUnhijo(actual)){
+                ultNodo = actual;
+                ultimoIndice = indice;                                       //charito --> chari;   charisa, charizote. aca me devuelve el indice de i, y nodo chari (AUTOTESTEO VISUAL)
+                                                                             //BORARIA A PARTIR DE chariTTTTTo, osea, borro t y todo lo q le siga a esa t. (solo "o" jiji)   
+            }
+
+            actual = siguiente;
+        }
+        //Ahora tocaria borrar hasta el ultimo nodo q tiene valor
+        if (tieneUnhijo(actual)){                                         //charito --> chari;   charisa, charizote. aca me devuelve el indice de i, y nodo chari (AUTOTESTEO VISUAL)
+            actual.valor = null;                                                             //BORARIA A PARTIR DE chariTTTTTo, osea, borro t y todo lo q le siga a esa t. (solo "o" jiji)   
+        }
+
+
+
+        else{                                           //en este caso, borro a partir del indice obtenido.
+            ultNodo.siguientes.set(ultimoIndice,null);
+        }
+        
+        
+
+
+        //verdaderamente habria que chequear si efectivaemnte estoy borrando bien las conexiones de los nodos, pareciera q si.
+
+
+
+    }
+
+
 }
 
 
