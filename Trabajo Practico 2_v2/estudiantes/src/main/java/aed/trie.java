@@ -2,7 +2,7 @@ package aed;
 
 import java.util.*;//para poder usar arrayList
 
-public class trie<T> {
+public class Trie<T> {
     private Nodo raiz;
 
 
@@ -19,7 +19,7 @@ public class trie<T> {
     }
 
 
-    public trie(){
+    public Trie(){
         this.raiz = null;
     }
 
