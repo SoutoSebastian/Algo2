@@ -116,5 +116,16 @@ class trieTests {
         assertEquals(true, t.buscar("roffo"));
         assertEquals(true, t.buscar("rotfo"));
     }
+
+    @Test
+    void probando_el_toString(){
+        Trie<Integer> t = new Trie<Integer>();                                      
+        t.insertar("rompecabezas",10);                                  
+        t.insertar("rocola",15);
+        t.insertar("roffo",1);
+        t.insertar("rotfo",1);
+        t.insertar("arbol",1);
+        assertEquals("[arbol, rocola, roffo, rompecabezas, rotfo]", t.todasLasPalabras(t));
+    }
     
 }
