@@ -7,6 +7,11 @@ public class Estudiantes {
         estudiantes = new Trie<Integer>();
 
     }
+
+    public int materiasInscriptas(String estudiante){
+        int res = estudiantes.obtener(estudiante);
+        return res;
+    }
     
 
 
