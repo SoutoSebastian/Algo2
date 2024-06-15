@@ -1,5 +1,8 @@
 package aed;
 
+
+//import org.omg.CORBA.TRANSACTION_MODE;
+
 public class SistemaSIU {
 
     //private trie<trie<tuple<String[],Integer[]>>> sistema = new trie<trie<tuple<String[],Integer[]>>>(); //un trie q conecta a tries q conectan a tuplas <alumnos[],numero de docentes[]>
@@ -7,12 +10,17 @@ public class SistemaSIU {
 
     //private tuple<String[],Integer[]> datosPorMateria = new tuple<String[],Integer[]>(new String[2],new Integer[2]);    //MUY DUDOSO, EN VEZ DE STRING[] USAR LISTAS ENLAZADAS EN MI OPINION.
 
-    private Trie<Trie<Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>>>> sistema = new Trie<Trie<Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>>>>();
+    private Trie<Carrera> carreras;
+
+    private Estudiantes estudiantes= new Estudiantes();
+    
+    private Trie<Carrera> sistema = new Trie<Carrera>();
 
     //private Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>> datosPorMateria = new Tupla<ListaEnlazada<String>, ListaEnlazada<Integer>>(); //me parece q esto es mas un template, va 
                                                                                                                                               //a cambiar por materia asi q no usar esta
                                                                                                                                               //misma variable.
    
+
 
     enum CargoDocente{
         AY2,
@@ -21,49 +29,68 @@ public class SistemaSIU {
         PROF
     }
 
-    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){
+    //tripla va a ser ----> <listastring,listaint,trieMaterias<trieCarrera<Tripla<listastring,listaint,trieMaterias<trieCarrera<Tripla>>>
+
+    //carrera
+
+    public SistemaSIU(InfoMateria[] infoMaterias, String[] libretasUniversitarias){         //esto deberia estar finalizado
+
+        for (String libreta : libretasUniversitarias) {
+            estudiantes.añadirLibreta(libreta);
+        }
+            
+        
+        
         for (int i=0; i<infoMaterias.length; i++){
 
-            ListaEnlazada<String> listaAlumnos= new ListaEnlazada<>();
-            ListaEnlazada<Integer> listaDocentes = new ListaEnlazada<>();
-
-
-            Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>> datosPorMateriavariable =  
-            new Tupla<ListaEnlazada<String>, ListaEnlazada<Integer>>(listaAlumnos, listaDocentes);
-
-            for (int j=0; j<infoMaterias[0].getParesCarreraMateria().length; j++){
 
                 
+                Materia materiaVariable = new Materia();
 
-                String nombreCarrera=infoMaterias[i].getParesCarreraMateria()[j].getCarrera();
-                String nombreMateria = infoMaterias[i].getParesCarreraMateria()[j].getNombreMateria();
+                for (int j=0; j<infoMaterias[i].getParesCarreraMateria().length; j++){
 
-                if (sistema.buscar(nombreCarrera) == false){
-                    Trie<Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>>> trieCarrera = new Trie<Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>>>();
-                    sistema.insertar(nombreCarrera,trieCarrera);
+                    
+
+                    String nombreCarrera=infoMaterias[i].getParesCarreraMateria()[j].getCarrera();
+                    String nombreMateria = infoMaterias[i].getParesCarreraMateria()[j].getNombreMateria();
+
+
+
+                    if (sistema.buscar(nombreCarrera) == false){
+                        Carrera carrera = new Carrera();
+                        sistema.insertar(nombreCarrera,carrera);
+
+                    }
+
+                    Carrera refeCarrera=sistema.obtener(nombreCarrera); //esto deberia llevar a Carrera x, q tiene como claves materias.
+
+                    materiaVariable.insertarRefe(nombreMateria, refeCarrera);
+
+                    refeCarrera.agregarMateria(nombreMateria,materiaVariable);
+
+
+                    
+                    
 
                 }
 
-                Trie<Tupla<ListaEnlazada<String>,ListaEnlazada<Integer>>> carrera=sistema.obtener(nombreCarrera);
-
-
-                carrera.insertar(nombreMateria, datosPorMateriavariable);
-                
-
             }
 
-        }
 
-
-    ;	    
-}
+        ;	    
+    }
 
     public void inscribir(String estudiante, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");
+        estudiantes.inscribirEnMateria(estudiante);
+
+        Carrera carreraInscribir=sistema.obtener(carrera);
+        carreraInscribir.agregarAlumnoCarrera(materia, estudiante);
     }
 
     public void agregarDocente(CargoDocente cargo, String carrera, String materia){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+
+        Carrera carreraInscribir = sistema.obtener(materia); 
+        carreraInscribir.agregarDocenteCarrera(materia, cargo.ordinal());
     }
 
     public int[] plantelDocente(String materia, String carrera){

@@ -18,7 +18,7 @@ public class Carrera {
         
         Materia datoMateria = materias.obtener(materia);
 
-        //datoMateria.agregarAlumno(estudiante);
+        datoMateria.agregarAlumno(estudiante);
     }
 
 
@@ -26,9 +26,9 @@ public class Carrera {
 
         Materia datoMateria = materias.obtener(materia);
 
-        //int res = datoMateria.cantidadDeAlumnosMateria();
+        int res = datoMateria.cantidadAlumnos();
 
-        return  1;//res;
+        return  res;
     }
 
 
@@ -36,7 +36,7 @@ public class Carrera {
 
         Materia datoMateria = materias.obtener(materia);
 
-        //datoMateria.agregarDocenteMateria(docente);
+        datoMateria.agregarDocente(docente);
     }
 
 
@@ -44,9 +44,19 @@ public class Carrera {
 
         Materia datoMateria = materias.obtener(materia);
 
-        //datoMateria.plantelDocenteMateria();
+        datoMateria.getDocente();
 
         return null;
+    }
+
+
+    public boolean excedeCupoCarrera(String materia){
+
+        Materia datoMateria = materias.obtener(materia);
+
+        boolean res = datoMateria.excedeCupoMateria();
+
+        return res;
     }
 
 

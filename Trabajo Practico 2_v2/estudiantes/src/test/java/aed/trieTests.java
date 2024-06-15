@@ -128,4 +128,23 @@ class trieTests {
         assertEquals("[arbol, rocola, roffo, rompecabezas, rotfo]", t.todasLasPalabras(t));
     }
     
+
+    @Test
+    void testEstudiantes(){
+        Trie<Integer> t = new Trie<Integer>();
+        t.insertar("{1/2}",0);
+        t.insertar("{1/20}",0);
+        t.insertar("{20/2}",0);
+        t.insertar("{3/20}",0);
+        t.insertar("{7/2}",0);
+        t.insertar("{18/20}",0);
+        t.insertar("{1/2}",t.obtener("{1/2}")+1);
+        t.insertar("{1/20}",t.obtener("{1/20}")+1);
+        t.insertar("{20/2}",t.obtener("{20/2}")+1);
+        t.insertar("{3/20}",t.obtener("{3/20}")+1);
+        assertEquals(t.obtener("{3/20}"),1);
+        assertEquals(t.obtener("{20/2}"),1);
+        assertEquals(t.obtener("{1/20}"),1);
+        assertEquals(t.obtener("{1/2}"),1);
+    }
 }
