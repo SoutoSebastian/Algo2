@@ -184,6 +184,20 @@ public class ListaEnlazada<T> implements Secuencia<T> {
         return sbuffer.toString();
     }
 
+    public String[] anidarListaEnlazada(){
+        Iterador<T> iterador = this.iterador();
+        String[] res = new String[this.longitud()] ;
+        //T[] res = new T[this.longitud()];                     // no se puede crear un array generico en java
+        int i =0;
+        while(iterador.haySiguiente()){
+            res[i]= iterador.siguiente().toString();
+            i++;
+        }
+ 
+        return res;
+    }
+
+
 
 
     private class ListaIterador implements Iterador<T> {

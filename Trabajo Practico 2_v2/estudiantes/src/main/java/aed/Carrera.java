@@ -60,4 +60,11 @@ public class Carrera {
     }
 
 
+    public String[] todasLasMaterias(){
+
+        String[] res = materias.todasLasPalabras();
+        return res;
+    }
+
+
 }

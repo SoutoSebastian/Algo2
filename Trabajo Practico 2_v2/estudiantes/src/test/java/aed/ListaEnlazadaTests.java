@@ -333,4 +333,23 @@ class ListaEnlazadaTests {
         assertEquals(44, it.anterior());
     }
 
+
+   /*  @Test
+    void ListaToString(){
+
+        ListaEnlazada<String> lista = new ListaEnlazada<String>();
+        String[] paraprobar = new String[4];
+        paraprobar[0] = "a";
+        paraprobar[1] = "b";
+        paraprobar[2] = "c";
+        paraprobar[3] = "d";
+
+        lista.agregarAtras("a");
+        lista.agregarAtras("b");
+        lista.agregarAtras("c");
+        lista.agregarAtras("d");
+        System.out.println(paraprobar.toString());
+        System.out.println(lista.toString());
+        //assertEquals(paraprobar, lista.anidarListaEnlazada());
+    }*/
 }
