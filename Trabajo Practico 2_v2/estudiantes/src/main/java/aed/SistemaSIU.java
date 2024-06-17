@@ -94,7 +94,10 @@ public class SistemaSIU {
     }
 
     public int[] plantelDocente(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        Carrera trieMaterias = sistema.obtener(carrera);
+        int[] res = trieMaterias.plantelDocenteCarrera(materia);
+        
+        return res;
     }
 
     public void cerrarMateria(String materia, String carrera){
@@ -102,7 +105,9 @@ public class SistemaSIU {
     }
 
     public int inscriptos(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
+        Carrera carreraInscriptos = sistema.obtener(carrera);
+        int inscriptos = carreraInscriptos.cantidadInscriptosCarrera(materia);
+        return inscriptos;	    
     }
 
     public boolean excedeCupo(String materia, String carrera){

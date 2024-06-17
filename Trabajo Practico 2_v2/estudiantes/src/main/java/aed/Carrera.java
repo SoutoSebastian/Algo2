@@ -44,9 +44,9 @@ public class Carrera {
 
         Materia datoMateria = materias.obtener(materia);
 
-        datoMateria.getDocente();
+        int[] docentes = datoMateria.getDocente();
 
-        return null;
+        return docentes;
     }
 
 

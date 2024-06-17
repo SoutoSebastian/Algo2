@@ -6,6 +6,9 @@ public class Materia {
     public Materia(){
         ListaEnlazada<String> estudiantes = new ListaEnlazada<String>();
         int[] docentes = new int[4];
+        for(int i = 0; i<4; i++){
+            docentes[i] = 0;
+        }
         Trie<Carrera> refACarrera = new Trie<Carrera>();
 
         datosXmateria = new Tripla<ListaEnlazada<String>,int[],Trie<Carrera>>(estudiantes, docentes, refACarrera);
@@ -21,20 +24,22 @@ public class Materia {
         return alumnos.longitud();
     }
     public void agregarDocente(int docente){
-        int[] docentes = datosXmateria.getSegundo();
+        int[] nuevosDocentes = datosXmateria.getSegundo();
         if(docente == 0){
-           docentes[0] ++;
+           nuevosDocentes[3] ++;
         }
-        if(docente == 1){
-            docentes[1] ++;
+        else if(docente == 1){
+            nuevosDocentes[2] ++;
          }
-         if(docente == 2){
-            docentes[2] ++;
+         else if(docente == 2){
+            nuevosDocentes[1] ++;
          }
-         if(docente ==3){
-            docentes[3] ++;
+         else{
+            nuevosDocentes[0] ++;
          }
-        return;
+
+        
+        
     }
 
     public int[] getDocente(){
@@ -57,7 +62,7 @@ public class Materia {
     public boolean excedeCupoMateria(){
         boolean res = false;
 
-        if(excedeCupoAY1() || excedeCupoAY2() || excedeCupoJTP() || excedeCupoProf()){
+        if(this.excedeCupoAY1() || this.excedeCupoAY2() || this.excedeCupoJTP() || this.excedeCupoProf()){
             res = true;
         }
 
@@ -71,8 +76,10 @@ public class Materia {
         int[] docentes = this.getDocente();
         boolean res = false;
 
-        if(docentes[3] != 0){
-            if((cantAlumnos/docentes[3]) >= 250){
+        if(docentes[0] != 0){
+            double cantAlumnosd = cantAlumnos;
+            double cantDocentes = docentes[0];
+            if((cantAlumnosd/cantDocentes) > 250){
                 res = true;
             }
         }else{
@@ -92,8 +99,10 @@ public class Materia {
         int[] docentes = this.getDocente();
         boolean res = false;
 
-        if(docentes[2] != 0){
-            if((cantAlumnos/docentes[2]) >= 250){
+        if(docentes[1] != 0){
+            double cantAlumnosd = cantAlumnos;
+            double cantDocentes = docentes[1];
+            if((cantAlumnosd/cantDocentes) > 100){
                 res = true;
             }
         }else{
@@ -113,8 +122,10 @@ public class Materia {
         int[] docentes = this.getDocente();
         boolean res = false;
 
-        if(docentes[1] != 0){
-            if((cantAlumnos/docentes[1]) >= 250){
+        if(docentes[2] != 0){
+            double cantAlumnosd = cantAlumnos;
+            double cantDocentes = docentes[2];
+            if((cantAlumnosd/cantDocentes) > 20){
                 res = true;
             }
         }else{
@@ -134,8 +145,10 @@ public class Materia {
         int[] docentes = this.getDocente();
         boolean res = false;
 
-        if(docentes[0] != 0){
-            if((cantAlumnos/docentes[0]) >= 250){
+        if(docentes[3] != 0){
+            double cantAlumnosd = cantAlumnos;
+            double cantDocentes = docentes[3];
+            if((cantAlumnosd/cantDocentes) > 30){
                 res = true;
             }
         }else{

@@ -194,10 +194,16 @@ public class SistemaSIUTests {
         assertEquals(10, sistema.inscriptos("Química General e Inorgánica 1", "Ciencias Biológicas"));
         assertEquals(102, sistema.inscriptos("Algoritmos1", "Ciencias de Datos"));
         assertEquals(102, sistema.inscriptos("Técnicas de Diseño de Algoritmos", "Ciencias de la Computación"));
+        assertEquals(200, sistema.inscriptos("Algoritmos2", "Ciencias de Datos"));
         assertEquals(200, sistema.inscriptos("Algoritmos", "Ciencias de la Computación"));
         assertEquals(0, sistema.inscriptos("Análisis I", "Ciencias de Datos"));
+        System.out.println(sistema.inscriptos("Intro a la Programación","Ciencias de la Computación"));
         assertTrue(sistema.excedeCupo("Intro a la Programación", "Ciencias de la Computación"));
         sistema.agregarDocente(SistemaSIU.CargoDocente.AY1, "Ciencias de la Computación", "Intro a la Programación");
+        System.out.println(sistema.plantelDocente("Algoritmos2", "Ciencias de Datos")[0]);
+        System.out.println(sistema.plantelDocente("Algoritmos2", "Ciencias de Datos")[1]);
+        System.out.println(sistema.plantelDocente("Algoritmos2", "Ciencias de Datos")[2]);
+        System.out.println(sistema.plantelDocente("Algoritmos2", "Ciencias de Datos")[3]);
         assertFalse(sistema.excedeCupo("Algoritmos1", "Ciencias de Datos"));
         assertFalse(sistema.excedeCupo("Algoritmos2", "Ciencias de Datos"));
         sistema.inscribir(nuevos_inscriptos[200], "Ciencias de la Computación", "Algoritmos");
@@ -312,4 +318,5 @@ public class SistemaSIUTests {
         String[] carreras = new String[] {"Ciencias Biológicas", "Ciencias Físicas", "Ciencias Matemáticas", "Ciencias Químicas", "Ciencias de Datos", "Ciencias de la Computación"};
         assertArrayEquals(carreras, sistema.carreras());
     }
+
 }
