@@ -147,4 +147,13 @@ class trieTests {
         assertEquals(t.obtener("{1/20}"),1);
         assertEquals(t.obtener("{1/2}"),1);
     }
+
+    @Test
+    void testBorrado(){
+        Trie<Integer> t = new Trie<Integer>();
+        t.insertar("Matemática 3",0);
+        t.insertar("Matemática 1",10);
+        t.borrar("Matemática 1");
+        t.borrar("Matemática 3");
+    }
 }

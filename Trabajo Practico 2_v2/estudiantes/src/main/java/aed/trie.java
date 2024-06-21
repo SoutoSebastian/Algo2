@@ -128,11 +128,20 @@ public class Trie<T> {
         return contador == 1;
     }
 
+
     public void borrar(String clave){
+
+        if(this.todasLasPalabras().length == 1){
+            raiz = null;
+        }else{
+        
+        
+        
         Nodo actual = raiz;
-        Nodo ultNodo = null;                                                //GUARDO EN ULTNODO (MIENTRAS VOY BAJANDO) AQUEL NODO Q TENGA MAS DE UN HIJO O Q TENGA SIGNIFICADO
-                                                                            //SI TIENE ALGUNA DE ESTAS 2, NO PUEDO BORRAR ESE NODO!!! SI NO PIERDO COSAS Q NO QUIERO PERDER.
-                                                                            //----> VER EJEMPLO VISUAL DE BORRAR CHARITO, CON CHARI CON SIGNFICADO Y CHARISA, CHARIZOTE TAMBIEN CON SIGN.
+        Nodo ultNodo = null;
+        
+
+                                                                           
         int ultimoIndice = 0;
 
         for (int i=0; i< clave.length(); i++){
@@ -158,7 +167,7 @@ public class Trie<T> {
         else{                                           //en este caso, borro a partir del indice obtenido.
             ultNodo.siguientes.set(ultimoIndice,null);
         }
-        
+    }
         
 
 

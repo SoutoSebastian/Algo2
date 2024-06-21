@@ -10,7 +10,6 @@ public class SistemaSIU {
 
     //private tuple<String[],Integer[]> datosPorMateria = new tuple<String[],Integer[]>(new String[2],new Integer[2]);    //MUY DUDOSO, EN VEZ DE STRING[] USAR LISTAS ENLAZADAS EN MI OPINION.
 
-    private Trie<Carrera> carreras;
 
     private Estudiantes estudiantes= new Estudiantes();
     
@@ -101,8 +100,36 @@ public class SistemaSIU {
     }
 
     public void cerrarMateria(String materia, String carrera){
-        throw new UnsupportedOperationException("Método no implementado aún");	    
-    }
+        /*Carrera trieMaterias = sistema.obtener(carrera);
+        
+        ListaEnlazada<String> alumnosDeMateria = trieMaterias.getAlumnos(materia);
+
+        Iterador<String> it =  alumnosDeMateria.iterador();
+
+        while(it.haySiguiente()){
+            String alumno = it.siguiente();
+            estudiantes.desinscribirEnMateria(alumno);
+        }
+
+        ListaEnlazada<Tupla<String,Carrera>> aliasMaterias = trieMaterias.getAlias(materia);
+        Iterador<Tupla<String,Carrera>> it2 =  aliasMaterias.iterador();
+
+        while(it2.haySiguiente()){
+            Tupla<String,Carrera> aliasIndividual = it2.siguiente();
+            String alias = aliasIndividual.getPrimero();
+            Carrera refCarrera = aliasIndividual.getSegundo();
+
+            if(alias != materia){
+                refCarrera.borrarMateria(alias);
+            }
+        }*/
+
+        Carrera trieMaterias = sistema.obtener(carrera);
+        trieMaterias.cerrarMateria(materia, estudiantes);
+
+
+        }
+    
 
     public int inscriptos(String materia, String carrera){
         Carrera carreraInscriptos = sistema.obtener(carrera);

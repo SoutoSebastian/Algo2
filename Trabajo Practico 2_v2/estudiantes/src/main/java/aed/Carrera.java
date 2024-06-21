@@ -49,6 +49,22 @@ public class Carrera {
         return docentes;
     }
 
+    public ListaEnlazada<String> getAlumnos(String materia){
+        ListaEnlazada<String> alumnos = materias.obtener(materia).getAlumnos();
+        return alumnos;
+    }
+
+    public ListaEnlazada<Tupla<String,Carrera>> getAlias(String materia){
+
+        Materia datoMateria = materias.obtener(materia);
+        ListaEnlazada<Tupla<String,Carrera>> listaAlias = datoMateria.getRefe();
+        return listaAlias; 
+    }
+
+    public void borrarMateria(String materia){
+        materias.borrar(materia);
+    }
+
 
     public boolean excedeCupoCarrera(String materia){
 
@@ -65,6 +81,15 @@ public class Carrera {
         String[] res = materias.todasLasPalabras();
         return res;
     }
+
+
+    public void cerrarMateria(String materia, Estudiantes estudiantes){
+        Materia datoMateria = materias.obtener(materia);
+
+        datoMateria.cerrarMateria(estudiantes);
+
+    }
+
 
 
 }

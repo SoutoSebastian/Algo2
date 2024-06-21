@@ -280,6 +280,7 @@ public class SistemaSIUTests {
         realizar_inscripciones(sistema);
         cargar_docentes(sistema, 20, 10, 5, 2);
 
+         
         sistema.cerrarMateria("Intro a la Programación", "Ciencias de la Computación");
         sistema.cerrarMateria("Análisis Matemático I", "Ciencias Químicas");
         String[] materiasCompu = new String[] {"Algoritmos", "Técnicas de Diseño de Algoritmos"};
@@ -290,6 +291,8 @@ public class SistemaSIUTests {
         assertArrayEquals(materiasQuimica, sistema.materias("Ciencias Químicas"));
         assertEquals(0, sistema.materiasInscriptas(estudiantes[0]));
         assertEquals(0, sistema.materiasInscriptas(estudiantes[1]));
+
+        
 
         sistema.cerrarMateria("Matemática 3", "Ciencias Físicas");
         String[] sinMaterias = new String[] {};
@@ -305,7 +308,7 @@ public class SistemaSIUTests {
         assertArrayEquals(sinMaterias, sistema.materias("Ciencias Biológicas"));
         assertArrayEquals(sinMaterias, sistema.materias("Ciencias Químicas"));
         assertEquals(1, sistema.materiasInscriptas(estudiantes[9]));
-
+       
         sistema.cerrarMateria("Algoritmos", "Ciencias de la Computación");
         assertEquals(1, sistema.materiasInscriptas(estudiantes[7]));
         sistema.cerrarMateria("Algoritmos3", "Ciencias de Datos");

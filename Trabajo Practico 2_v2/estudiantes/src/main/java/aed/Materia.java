@@ -1,7 +1,7 @@
 package aed;
 
 public class Materia {
-    private Tripla<ListaEnlazada<String>,int[],Trie<Carrera>> datosXmateria;
+    private Tripla<ListaEnlazada<String>,int[],ListaEnlazada<Tupla<String,Carrera>>> datosXmateria;
 
     public Materia(){
         ListaEnlazada<String> estudiantes = new ListaEnlazada<String>();
@@ -9,9 +9,9 @@ public class Materia {
         for(int i = 0; i<4; i++){
             docentes[i] = 0;
         }
-        Trie<Carrera> refACarrera = new Trie<Carrera>();
+        ListaEnlazada<Tupla<String,Carrera>> refACarrera = new ListaEnlazada<>();
 
-        datosXmateria = new Tripla<ListaEnlazada<String>,int[],Trie<Carrera>>(estudiantes, docentes, refACarrera);
+        datosXmateria = new Tripla<ListaEnlazada<String>,int[],ListaEnlazada<Tupla<String,Carrera>>>(estudiantes, docentes, refACarrera);
     }
     public void agregarAlumno(String alumno){
         ListaEnlazada<String> alumnos = datosXmateria.getPrimero();
@@ -42,18 +42,25 @@ public class Materia {
         
     }
 
+    public ListaEnlazada<String> getAlumnos(){
+        ListaEnlazada<String> alumnos = datosXmateria.getPrimero();
+        return alumnos;
+    }
+
     public int[] getDocente(){
         int[] docentes = datosXmateria.getSegundo();
         return docentes;
     }
 
     public void insertarRefe(String nombreMateria,Carrera referencia){ //lo estoy definiendo verdaderamente? testear.
-        Trie<Carrera> refe=datosXmateria.getTercero();
-        refe.insertar(nombreMateria, referencia);                             
+        ListaEnlazada<Tupla<String,Carrera>> refe = datosXmateria.getTercero();
+        Tupla<String,Carrera> tuplaDeCarreras = new Tupla<String,Carrera>(nombreMateria, referencia);
+
+        refe.agregarAtras(tuplaDeCarreras);                             
         
     }
 
-    public Trie<Carrera> getRefe(){
+    public ListaEnlazada<Tupla<String,Carrera>> getRefe(){
         
         return datosXmateria.getTercero();
     }
@@ -158,6 +165,33 @@ public class Materia {
         }
 
         return res;
+
+    }
+
+    public void cerrarMateria(Estudiantes estudiantes){
+
+        ListaEnlazada<String> alumnos = this.getAlumnos();
+
+        Iterador<String> it =  alumnos.iterador();
+
+        while(it.haySiguiente()){
+            String alumno = it.siguiente();
+            estudiantes.desinscribirEnMateria(alumno);
+        }
+
+
+        ListaEnlazada<Tupla<String,Carrera>> ListaAlias = this.getRefe();
+        
+        Iterador<Tupla<String,Carrera>> it2 =  ListaAlias.iterador();
+        
+        while(it2.haySiguiente()){
+            Tupla<String,Carrera> aliasIndividual = it2.siguiente();
+            String alias = aliasIndividual.getPrimero();
+            Carrera refCarrera = aliasIndividual.getSegundo();
+
+            refCarrera.borrarMateria(alias);
+        }
+
 
     }
 

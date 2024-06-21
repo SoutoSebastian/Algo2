@@ -3,185 +3,149 @@ package aed;
 import java.util.*;
 
 public class ListaEnlazada<T> implements Secuencia<T> {
-    // Completar atributos privados
-    private Nodo _primero;
-    private Nodo _ultimo;
-
+    private Nodo primero;
+    private Nodo ultimo;
 
     private class Nodo {
-        T valor;
-        Nodo sig;
-        Nodo ant;
-
-        Nodo(T v){
-            valor = v;
-        }
-
+        private T valor;
+        private Nodo ant;
+        private Nodo sig;
 
     }
 
     public ListaEnlazada() {
-        _primero= null;
-        _ultimo= null;
-
+        primero = null;
+        ultimo = null;
     }
 
     public int longitud() {
-        int res = 0;
-        Nodo nodoIntercambiable = new Nodo(null);       //innesecario?
-        nodoIntercambiable = _primero;
-        
-        while (nodoIntercambiable!=null){     //no ver solo primero, ver mas! REVISAR
-            res=res+1;
-            nodoIntercambiable=nodoIntercambiable.sig;
-            
+
+        int res = 1;
+
+        if (this.primero == null){
+            res = 0;
+        }else{
+            Nodo actual = this.primero;
+
+            while (actual.sig != null){
+            actual = actual.sig;
+            res += 1; 
+            } 
         }
         return res;
+
     }
 
-    public void agregarAdelante(T elem) {       // agregar adelante es agregar al principio -----> (___,elem1,elem2)
-        Nodo nuevo =new Nodo(elem);
-        nuevo.sig=_primero;     //PARA MI ESTO TRAE PROBELMAS CON ALIASING, PERO NO SE, YO CREARIA UN NUEVO NODO DONDE GUARDO _PRIMERO Y AHI LO METO. _PREGUNTAR_
-        if(_primero!=null){
-            _primero.ant=nuevo;}
-        _primero=nuevo;
+    public void agregarAdelante(T elem) {
 
-        if (_ultimo==null){
-            _ultimo = nuevo;
-        }
+        Nodo nuevoPrimero = new Nodo();
+        nuevoPrimero.valor = elem;
+        nuevoPrimero.ant = null;
         
+        if (this.longitud() == 0){
 
+            nuevoPrimero.sig = null;
+            this.ultimo = nuevoPrimero;
+            this.primero = nuevoPrimero;
+        }else{
+
+            this.primero.ant = nuevoPrimero;
+            nuevoPrimero.sig = this.primero;
+            this.primero = nuevoPrimero;
+        }
 
     }
 
     public void agregarAtras(T elem) {
-        Nodo nuevo = new Nodo(elem);
+        Nodo nuevoUltimo = new Nodo();
+        nuevoUltimo.valor = elem;
+        nuevoUltimo.sig = null;
 
-        if (_ultimo == null){
-            _ultimo = nuevo;
-            _primero = nuevo;
+        if (this.longitud() == 0){
+            
+            nuevoUltimo.ant = null;
+            this.primero = nuevoUltimo;
+            this.ultimo = nuevoUltimo;
+
+        }else{
+            this.ultimo.sig = nuevoUltimo;
+            nuevoUltimo.ant = this.ultimo;
+            this.ultimo = nuevoUltimo;}
         }
-        else{
-            _ultimo.sig= nuevo;
-            nuevo.ant=_ultimo;
-            _ultimo=nuevo;
-
-        }
-
-    }
 
     public T obtener(int i) {
-        int contador = 0;
-        
-        Nodo nodoIntercambiable = _primero;
-        while (contador != i) {
-            nodoIntercambiable=nodoIntercambiable.sig;
-            contador = contador +1;
+        Nodo actual = this.primero;
+
+        for(int j=0; j!=i; j++){
+            actual = actual.sig;
         }
 
-        return nodoIntercambiable.valor;
-
+        return actual.valor;
     }
-
-    private Nodo elegirNodo(int i){
-
-        Nodo nodoIntercambiable = _primero;
-
-        int contador = 0;
-        
-        while (contador != i) {
-            nodoIntercambiable=nodoIntercambiable.sig;
-            contador = contador +1;
-        }
-        return nodoIntercambiable;
-
-    }
-
-
 
     public void eliminar(int i) {
-        
-        Nodo nodoIntercambiable=elegirNodo(i);
-        System.out.println(this.longitud());
-        
-        if (nodoIntercambiable.sig==null && nodoIntercambiable.ant==null){
-            nodoIntercambiable=null;
-            _primero=null;
-            _ultimo=null;
-        }
-        else if (nodoIntercambiable.sig == null){
-            (nodoIntercambiable.ant).sig=null;
-            _ultimo=nodoIntercambiable.ant;
-        }
-        else if (nodoIntercambiable.ant==null){
-            (nodoIntercambiable.sig).ant=null;
-            _primero = nodoIntercambiable.sig;
-            
-        }
+        Nodo actual = this.primero;
 
-        else{
-            (nodoIntercambiable.ant).sig=(nodoIntercambiable.sig);
-            (nodoIntercambiable.sig).ant=(nodoIntercambiable.ant);
+        if(this.longitud() == 1){
+
+            this.primero = null;
+            this.ultimo = null;
+
+        }else if (i==0){
+
+            this.primero = actual.sig;
+            actual.sig.ant = null;
+
+        }else if(i == this.longitud()-1){
+
+            this.ultimo = this.ultimo.ant;
+            this.ultimo.sig = null;
+
+        }else{
+
+            for(int j=0; j<(this.longitud()); j++){
+                
+                if (j==i){
+                    actual.ant.sig = actual.sig;
+                    actual.sig.ant = actual.ant;
+                } 
+
+                actual = actual.sig;
+            }
         }
     }
 
     public void modificarPosicion(int indice, T elem) {
-        Nodo newNodo= new Nodo(elem);
-        
+        Nodo actual = this.primero;
 
-        Nodo nodoIntercambiable = elegirNodo(indice);
+        for(int j=0; j<this.longitud();j++){
+            if (j==indice){
+                actual.valor = elem;
+            }
 
-        newNodo.sig=nodoIntercambiable.sig;
-        newNodo.ant=nodoIntercambiable.ant;
-
-        if (nodoIntercambiable==_primero){
-            (nodoIntercambiable.sig).ant=newNodo;
-        }
-        else if (nodoIntercambiable==_ultimo){
-            (nodoIntercambiable.ant).sig= newNodo;
-        }
-        else{
-        (nodoIntercambiable.ant).sig= newNodo;
-        (nodoIntercambiable.sig).ant=newNodo;
+            actual = actual.sig;
         }
     }
 
     public ListaEnlazada<T> copiar() {
-        int contador= 0;        //will get to longitud() and stop
-        ListaEnlazada<T> res = new ListaEnlazada<>();
-        while (contador != this.longitud()){
-            res.agregarAtras(obtener(contador));
-            contador=contador+1;
-
-            
+        ListaEnlazada<T> nuevaLista = new ListaEnlazada<T>();
+        
+        for (int i=0; i<this.longitud();i++){
+            nuevaLista.agregarAtras(this.obtener(i));
         }
-        return res;
+
+        return nuevaLista;
+
     }
 
     public ListaEnlazada(ListaEnlazada<T> lista) {
-        _primero=null;
-        _ultimo=null;
-        if (lista.longitud() != 0) {
-            _primero = lista.elegirNodo(0);
-            _ultimo = elegirNodo((lista.longitud())-1);
-        }
+        primero = null;
+        ultimo = null;
 
-    }
-    
-    @Override
-    public String toString() {
-        StringBuffer sbuffer= new StringBuffer();
-        sbuffer.append("[");
-        sbuffer.append(this.obtener(0)+",");
-        int contador = 1;
-        while (contador != this.longitud()-1){
-            sbuffer.append(" "+this.obtener(contador));
-            sbuffer.append(",");
-            contador=contador+1;
+        for (int i=0; i<lista.longitud();i++){
+            this.agregarAtras(lista.obtener(i));
         }
-        sbuffer.append(" "+this.obtener(contador));
-        sbuffer.append("]");
-        return sbuffer.toString();
+        
     }
 
     public String[] anidarListaEnlazada(){
@@ -196,78 +160,70 @@ public class ListaEnlazada<T> implements Secuencia<T> {
  
         return res;
     }
+    
+    @Override
+    public String toString() {
+        String res = "[";
 
+        for (int i = 0; i<(this.longitud()-1);i++){
+            res = res + this.obtener(i).toString()+", ";
+        }
 
+        res = res + this.obtener(this.longitud()-1).toString() + "]";
+
+        return res;
+    }
 
 
     private class ListaIterador implements Iterador<T> {
-    	// Completar atributos privados
-        private int dedito;
-        ListaIterador() {dedito = -1;}
+            Nodo actual;
 
-        public boolean haySiguiente() {
-            
-            
-            if (dedito == -1){
-                if (_primero!=null){
-                    return true;
-                }
-                else{
+            public ListaIterador() {
+                actual = primero;
+            }
+
+            public boolean haySiguiente() {
+                if (primero == null) {
                     return false;
+                }else{
+                    return (actual.ant != ultimo) ;
                 }
             }
             
-            Nodo nodoIntercambiable= _primero;
-            int contador = 0;
+            public boolean hayAnterior() {
+                if (primero == null) {
+                    return false;
+                }else{
+                    return (actual.ant != null);
+                }    
+            }
+
+            public T siguiente() {
+                if (actual != ultimo){
+                    T res = actual.valor;
+                    actual = actual.sig;
+                    return res;
+                }else{
+                    T res = actual.valor;
+                    actual = new Nodo();
+                    actual.valor = null;
+                    actual.ant = ultimo;
+                    actual.sig = null;
+                    return res;
+                }
+            }
             
-            while (dedito != contador){
-                nodoIntercambiable=nodoIntercambiable.sig;
-                contador=contador+1;
-            }
-            if (nodoIntercambiable==null){
-                return false;
-            }
-            else{
-                return nodoIntercambiable.sig!=null;
-            }
-            
-        }
-        
-        public boolean hayAnterior() {
-            if (dedito==-1){
-                return false;
-            }
-            Nodo nodoIntercambiable= _primero;
-            int contador = 0;
-            while (dedito != contador){
-                nodoIntercambiable=nodoIntercambiable.sig;
-                contador=contador+1;
-            }
-            if (nodoIntercambiable==null){
-                return false;
-            }
-            else{
-                return nodoIntercambiable!=null;
+
+            public T anterior() {
+                actual = actual.ant;
+                return actual.valor;
             }
         }
 
-        public T siguiente() {
-            dedito=dedito + 1;
-            return obtener(dedito);
-
+        public Iterador<T> iterador() {
+            Iterador<T> nuevIterador = new ListaIterador();
+            return nuevIterador;
         }
-        
 
-        public T anterior() {
-	        dedito=dedito-1;
-            return obtener(dedito+1);        
-        }
     }
-
-    public Iterador<T> iterador() {
-	    Iterador<T> iterador = new ListaIterador();
-        return iterador;
-    }
-
-}
  
